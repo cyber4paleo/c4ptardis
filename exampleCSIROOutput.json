@@ -1,0 +1,106 @@
+{
+  "head": {
+    "vars": [
+      "era",
+      "rank",
+      "begin",
+      "end",
+      "name",
+      "targetAge"
+    ]
+  },
+  "results": {
+    "bindings": [
+      {
+        "rank": {
+          "type": "uri",
+          "value": "http://resource.geosciml.org/ontology/timescale/rank/Age"
+        },
+        "era": {
+          "type": "uri",
+          "value": "http://resource.geosciml.org/classifier/ics/ischart/Aeronian"
+        },
+        "targetAge": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "439."
+        },
+        "end": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#float",
+          "type": "literal",
+          "value": "438.5"
+        },
+        "name": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Aeronian Age"
+        },
+        "begin": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#float",
+          "type": "literal",
+          "value": "440.8"
+        }
+      },
+      {
+        "rank": {
+          "type": "uri",
+          "value": "http://resource.geosciml.org/ontology/timescale/rank/Epoch"
+        },
+        "era": {
+          "type": "uri",
+          "value": "http://resource.geosciml.org/classifier/ics/ischart/Llandovery"
+        },
+        "targetAge": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "439."
+        },
+        "end": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#float",
+          "type": "literal",
+          "value": "433.4"
+        },
+        "name": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Llandovery Epoch"
+        },
+        "begin": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#float",
+          "type": "literal",
+          "value": "443.4"
+        }
+      },
+      {
+        "rank": {
+          "type": "uri",
+          "value": "http://resource.geosciml.org/ontology/timescale/rank/Period"
+        },
+        "era": {
+          "type": "uri",
+          "value": "http://resource.geosciml.org/classifier/ics/ischart/Silurian"
+        },
+        "targetAge": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+          "type": "literal",
+          "value": "439."
+        },
+        "end": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#float",
+          "type": "literal",
+          "value": "419.2"
+        },
+        "name": {
+          "xml:lang": "en",
+          "type": "literal",
+          "value": "Silurian Period"
+        },
+        "begin": {
+          "datatype": "http://www.w3.org/2001/XMLSchema#float",
+          "type": "literal",
+          "value": "443.4"
+        }
+      }
+    ]
+  }
+}

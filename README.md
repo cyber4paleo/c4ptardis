@@ -1,10 +1,66 @@
 ## C4P TARDIS
 
-# details to come
-
+# Info
+Please see the included PDF with this repository for a visual view of what was done in team TARDIS.
 
 # RDF scratch pad
 
+
+```
+# tag: maxage
+prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> 
+prefix iodp: <http://data.oceandrilling.org/core/1/> 
+prefix foaf: <http://xmlns.com/foaf/0.1/> 
+prefix owl: <http://www.w3.org/2002/07/owl#> 
+prefix xsd: <http://www.w3.org/2001/XMLSchema#> 
+prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> 
+SELECT (MAX(?age) AS ?maxage) (MIN(?age) AS ?minage)
+WHERE {
+   ?s iodp:leg "192" .
+   ?s iodp:ma ?age   .
+}
+```
+
+```
+# tag: query2
+PREFIX chronos: <http://www.chronos.org/loc-schema#>
+PREFIX geo: <http://www.w3.org/2003/01/geo/wgs84_pos#>
+SELECT  ?dataset ?ob  ?age ?depth ?long ?lat
+FROM <http://chronos.org/janusamp#>
+WHERE {
+  ?ob chronos:age ?age . 
+  ?ob chronos:depth ?depth . 
+  ?ob <http://purl.org/linked-data/cube#dataSet>  ?dataset .
+  ?dataset geo:long ?long .
+  ?dataset geo:lat ?lat .
+   ?dataset chronos:leg "{{.Leg}}" .  
+   ?dataset chronos:site "{{.Site}}" .
+   ?dataset chronos:hole "{{.Hole}}" . 
+}
+ORDER BY ?dataset DESC(?age)
+LIMIT 1
+```
+
+```
+# tag: csiro
+prefix gts: <http://resource.geosciml.org/ontology/timescale/gts#> 
+prefix thors: <http://resource.geosciml.org/ontology/timescale/thors#> 
+prefix tm: <http://def.seegrid.csiro.au/isotc211/iso19108/2002/temporal>
+PREFIX isc: <http://resource.geosciml.org/classifier/ics/ischart/>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+SELECT *
+WHERE {
+                 ?era gts:rank ?rank .
+                 ?era thors:begin/tm:temporalPosition/tm:value ?begin .
+                 ?era thors:begin/tm:temporalPosition/tm:frame <http://resource.geosciml.org/classifier/cgi/geologicage/ma> .
+                 ?era thors:end/tm:temporalPosition/tm:value ?end .
+                 ?era thors:end/tm:temporalPosition/tm:frame <http://resource.geosciml.org/classifier/cgi/geologicage/ma> .
+                 ?era rdfs:label ?name .
+                 BIND ( "439."^^xsd:decimal AS ?targetAge )
+                 FILTER ( ?targetAge > xsd:decimal(?end) )
+                 FILTER ( ?targetAge < xsd:decimal(?begin) )
+}
+```
 
 
  ```
@@ -16,6 +72,7 @@
      geolink:hasAbstract
 
  ```
+
 
 
 # Encoded CSIRO call

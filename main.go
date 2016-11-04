@@ -52,6 +52,7 @@ WHERE {
 ORDER BY ?dataset DESC(?age)
 LIMIT 1
 
+# connection numeric age to name
 # tag: csiro
 prefix gts: <http://resource.geosciml.org/ontology/timescale/gts#> 
 prefix thors: <http://resource.geosciml.org/ontology/timescale/thors#> 
@@ -66,7 +67,7 @@ WHERE {
                  ?era thors:end/tm:temporalPosition/tm:value ?end .
                  ?era thors:end/tm:temporalPosition/tm:frame <http://resource.geosciml.org/classifier/cgi/geologicage/ma> .
                  ?era rdfs:label ?name .
-                 BIND ( "439."^^xsd:decimal AS ?targetAge )
+                 BIND ( "{{.}}"^^xsd:decimal AS ?targetAge )
                  FILTER ( ?targetAge > xsd:decimal(?end) )
                  FILTER ( ?targetAge < xsd:decimal(?begin) )
 }
@@ -121,6 +122,7 @@ func main() {
 	// call mongo and lookup the redirection to use...
 	session, err := GetMongoCon()
 	if err != nil {
+		log.Println(err)
 		panic(err)
 	}
 	defer session.Close()
@@ -150,7 +152,7 @@ func IndexCSVW(session *mgo.Session) {
 		solutionsTest := res.Solutions() // map[string][]rdf.Term
 		// fmt.Println("res.Solutions():")
 		for _, i := range solutionsTest {
-			fmt.Printf("Leg Site Hole Age: %s %s %s %s \n", item.Expedition, item.Site, item.Hole, i["age"])
+			fmt.Printf("\n\nLeg %s Site %s Hole %s Age %s \n", item.Expedition, item.Site, item.Hole, i["age"])
 
 			CSIROHack(fmt.Sprint(i["age"]))
 			// csiroSolutions := csirores.Solutions()
@@ -159,6 +161,8 @@ func IndexCSVW(session *mgo.Session) {
 			// 	fmt.Printf("TEST item %s \n", x)
 			// }
 
+			// results := CSIROCall(fmt.Sprint(i["age"]))
+			// fmt.Println(results)
 		}
 
 	}
@@ -226,16 +230,16 @@ func CSIROHack(age string) {
 
 	// loop on csiroStruct.Results.Bindings
 	for _, item := range csiroStruct.Results.Bindings {
-		fmt.Println(item.Era.Type)
-		fmt.Println(item.Era.Value)
-		fmt.Println(item.Name.Type)
-		fmt.Println(item.Name.Value)
+		fmt.Printf("Era: %s  %s  \n", item.Era.Type, item.Era.Value)
+		fmt.Printf("Name: %s  %s \n", item.Name.Type, item.Name.Value)
+
 	}
 	// fmt.Println(string(body))
 
 }
 
-func CSIROCall() *sparql.Results {
+// Had problem with this due to likely some issues now resolved with SPARQL library
+func CSIROCall(age string) *sparql.Results {
 	repo, err := sparql.NewRepo("http://resource.geosciml.org/sparql/isc2014",
 		sparql.Timeout(time.Millisecond*15000),
 	)
@@ -246,7 +250,7 @@ func CSIROCall() *sparql.Results {
 	f := bytes.NewBufferString(queries)
 	bank := sparql.LoadBank(f)
 
-	q, err := bank.Prepare("csiro", struct{}{})
+	q, err := bank.Prepare("csiro", struct{ Age string }{age})
 	if err != nil {
 		log.Printf("%s\n", err)
 	}
